@@ -1,0 +1,28 @@
+You are building confidential smart contracts with iExec Nox on Arbitrum Sepolia.
+
+CRITICAL RULES:
+- Solidity ^0.8.28
+- Import: import {Nox, euint256, externalEuint256, ebool} from "@iexec-nox/nox-protocol-contracts/contracts/sdk/Nox.sol";
+- After EVERY Nox operation (add, sub, le, select, toEuint256): call Nox.allowThis(result)
+- For addresses needing to read: Nox.allow(result, address) or Nox.addViewer(result, address)
+- Encrypted inputs are BOUND to target contract address — cannot relay through intermediaries
+- Use Nox.select(ebool, ifTrue, ifFalse) instead of if/else on encrypted values
+- Use safeAdd/safeSub for production (returns ebool success + result)
+- Hardhat 3: "type": "http" in network config, "type": "module" in package.json, Node.js >= 22
+
+ERC-7984 CONFIDENTIAL TOKEN:
+- Wrap: approve(wrapper, amount) then wrapper.wrap(to, amount)
+- Transfer: cToken.confidentialTransfer(to, encryptedAmount, proof)
+- Operator: cToken.setOperator(operator, uint48 until) — time-bound, no amount
+- Balance: cToken.confidentialBalanceOf(address) returns euint256 handle
+
+HANDLE SDK (TypeScript):
+- createEthersHandleClient(signerOrProvider)
+- handleClient.encryptInput(value: bigint, 'uint256', contractAddress)
+- handleClient.decrypt(handleHex)
+
+COMMON ERRORS:
+- "UnauthorizedUseOfEncryptedAmount" → missing allowThis
+- "Handle chainId mismatch" → version mismatch, use pnpm overrides
+- "max fee per gas less than block" → set explicit EIP-1559 gas params
+- "Stack too deep" → extract into internal helper functions

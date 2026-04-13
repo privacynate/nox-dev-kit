@@ -1,0 +1,25 @@
+{
+  "name": "nox-dev-kit",
+  "version": "0.1.0",
+  "description": "Community starter kit for building confidential dApps on iExec Nox. CLAUDE.md + AGENTS.md + templates + CLI.",
+  "keywords": ["iexec", "nox", "confidential", "tee", "erc-7984", "defi", "cli", "starter-kit", "ai", "claude", "cursor"],
+  "type": "module",
+  "bin": {
+    "nox-dev-kit": "./dist/cli.js"
+  },
+  "files": ["dist", "templates", "README.md"],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  },
+  "license": "MIT",
+  "author": "NoxDevKit community contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/privacynate/nox-dev-kit"
+  }
+}
