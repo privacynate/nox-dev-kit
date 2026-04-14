@@ -1,6 +1,6 @@
-IMPORTANT: Display the following menu EXACTLY as written. Do NOT summarize, rephrase, or shorten it. Show every line:
+Generate a confidential smart contract from 15 templates (DeFi, TradFi, Tokens, Data)
 
----
+Display this menu EXACTLY as written to the user:
 
 **What would you like to build?**
 
@@ -27,8 +27,6 @@ IMPORTANT: Display the following menu EXACTLY as written. Do NOT summarize, reph
 - **Encrypted oracle** — confidential price feed
 - **Access-controlled data store** — encrypted key-value store
 
-Pick a number or describe what you want.
-
----
+Pick one or describe what you want.
 
 After the user chooses, generate a complete Solidity contract following ALL rules in CLAUDE.md. Include Nox.allowThis() after every operation, Nox.allow() for readers, Nox.addViewer() for auditors, events, NatSpec, and a deploy script.
