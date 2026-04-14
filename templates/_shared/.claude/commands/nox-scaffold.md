@@ -1,27 +1,42 @@
-Generate a new Nox confidential smart contract. First, present this menu:
+Generate a new Nox confidential smart contract. First, present this menu exactly as shown:
 
-**What kind of confidential smart contract would you like to generate?** For example:
+**What would you like to build?** Pick a category and use case:
 
-- **Confidential token** (ERC-7984 wrapper around an ERC-20)
-- **Private vault** (deposit/withdraw with encrypted balances)
-- **Confidential voting** (encrypted votes with tallying)
-- **Private payroll** (batch encrypted salary payments)
-- **Confidential auction** (sealed-bid auction with encrypted bids)
-- **Access-controlled data store** (encrypted key-value with selective disclosure)
-- **Encrypted escrow** (bilateral deposit with auditor access)
-- **Token vesting** (encrypted amounts with cliff and schedule)
-- **Credit line** (encrypted limit enforced by TEE)
-- **Compliance check** (encrypted spending rules, pass/fail result)
+**DeFi**
+- **Confidential payroll** — batch encrypted salary transfers
+- **Sealed-bid auction** — encrypted bids, reveal only the winner
+- **Private lending pool** — encrypted deposits and positions
+- **Dark pool swap** — encrypted order sizes, no front-running
+- **Confidential lottery** — encrypted tickets, random winner selection
 
-Describe what you want to build and I'll scaffold the contract with proper Nox patterns.
+**TradFi on-chain**
+- **Encrypted escrow** — bilateral deposit, released on mutual agreement
+- **Token vesting** — encrypted amounts with cliff and schedule
+- **Credit line** — encrypted limit enforced by TEE
+- **Letter of credit** — trade finance with encrypted terms
 
-After the user picks, generate the complete Solidity contract following ALL rules from CLAUDE.md. Always include:
+**Tokens & Compliance**
+- **Confidential ERC-7984 token wrapper** — wrap any ERC-20 into a confidential token
+- **Compliance-gated transfer** — encrypted amount vs encrypted spending limit
+- **Private voting** — encrypted vote weights, public tally
+
+**Data & Access**
+- **Private NFT metadata** — encrypted attributes, selective reveal
+- **Encrypted oracle** — confidential price feed for DeFi protocols
+- **Access-controlled data store** — encrypted key-value with selective disclosure
+
+Give me a short description (purpose, actors, key operations) and I'll scaffold the contract following the CLAUDE.md rules.
+
+---
+
+After the user picks, generate the complete Solidity contract following ALL rules from CLAUDE.md:
 - pragma solidity ^0.8.28
-- Correct import from @iexec-nox/nox-protocol-contracts/contracts/sdk/Nox.sol
+- Import from @iexec-nox/nox-protocol-contracts/contracts/sdk/Nox.sol
 - Nox.allowThis() after EVERY Nox operation
 - Nox.allow() for every address that needs to read
 - Nox.select() instead of if/else on ebool
+- safeAdd/safeSub for production
 - NatSpec documentation
-- Events for state changes
+- Events for all state changes
 - An auditor access function using Nox.addViewer()
 - A matching deploy script in scripts/deploy.ts
