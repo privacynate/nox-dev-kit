@@ -88,14 +88,6 @@ euint256 amount = Nox.fromExternal(encryptedAmount, inputProof);
 Nox.allowThis(amount); // ← Claude knows to do this because of CLAUDE.md
 ```
 
-## How It Complements iExec's Roadmap
-
-iExec is building an AI MCP server for Nox (runtime infra). `nox-dev-kit` is the **knowledge layer** that works with or without MCP:
-
-- MCP not available yet → `CLAUDE.md` + slash commands handle everything
-- MCP ships → our templates and knowledge base plug right into it
-- Developers get value TODAY, not when MCP is production-ready
-
 ## Requirements
 
 - Node.js ≥ 22
