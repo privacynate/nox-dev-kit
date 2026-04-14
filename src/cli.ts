@@ -209,15 +209,45 @@ Provide a severity rating (Critical/High/Medium/Low/Info) for each finding.`
   console.log(`  ├── package.json           ← All Nox deps pre-installed`);
   console.log(`  ├── .env.example           ← Copy to .env and add your private key`);
   console.log(`  └── .gitignore`);
-  console.log(`\n  Next steps:`);
-  console.log(`  cd ${projectName}`);
-  console.log(`  cp .env.example .env       # Add your private key`);
-  console.log(`  pnpm install               # Install dependencies`);
-  console.log(`  npx hardhat compile        # Compile contracts`);
-  console.log(`\n  Then open in Claude Code / Cursor and start building!`);
-  console.log(`  Use /nox-scaffold to generate new contracts.`);
-  console.log(`  Use /nox-lint to check for common mistakes.`);
-  console.log(`  Use /nox-deploy to deploy to Arbitrum Sepolia.\n`);
+  // Auto-setup: .env, install, compile
+  console.log("\n  Setting up automatically...\n");
+
+  // Create .env from example
+  const envExample = path.join(projectDir, ".env.example");
+  const envFile = path.join(projectDir, ".env");
+  if (fs.existsSync(envExample)) {
+    fs.copyFileSync(envExample, envFile);
+    console.log("  ✓ .env created (add your private key later)");
+  }
+
+  // Install dependencies
+  const { execSync } = await import("child_process");
+  try {
+    console.log("  ✓ Installing dependencies...");
+    execSync("pnpm install", { cwd: projectDir, stdio: "ignore" });
+    console.log("  ✓ Dependencies installed");
+  } catch {
+    try {
+      execSync("npm install", { cwd: projectDir, stdio: "ignore" });
+      console.log("  ✓ Dependencies installed (npm)");
+    } catch {
+      console.log("  ⚠ Could not install deps. Run: cd " + projectName + " && pnpm install");
+    }
+  }
+
+  // Compile
+  try {
+    console.log("  ✓ Compiling contracts...");
+    execSync("npx hardhat compile", { cwd: projectDir, stdio: "ignore" });
+    console.log("  ✓ Contracts compiled\n");
+  } catch {
+    console.log("  ⚠ Compile failed. Check Node.js >= 22\n");
+  }
+
+  console.log(`  ✅ Ready! Open in Claude Code:\n`);
+  console.log(`     cd ${projectDir}`);
+  console.log(`     claude\n`);
+  console.log(`  Then try: /nox-scaffold\n`);
 }
 
 main().catch((err) => {
