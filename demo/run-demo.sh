@@ -85,7 +85,7 @@ say "One command. Working project. All dependencies configured."
 
 type_cmd "node ~/nox-dev-kit/dist/cli.js init confidential-vesting demo-nox-app"
 cd /tmp
-node npx nox-dev-kit init confidential-vesting demo-nox-app
+npx nox-dev-kit init confidential-vesting demo-nox-app
 sleep 2
 
 type_cmd "cd demo-nox-app"
