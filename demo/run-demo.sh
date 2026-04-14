@@ -109,7 +109,7 @@ header "STEP 2 — Install & Compile"
 
 say "Setting up .env and installing dependencies..."
 
-printf "PRIVATE_KEY=$PRIVATE_KEY\nARBITRUM_SEPOLIA_RPC=https://sepolia-rollup.arbitrum.io/rpc" > .env
+printf "PRIVATE_KEY=\$PRIVATE_KEY\nARBITRUM_SEPOLIA_RPC=https://sepolia-rollup.arbitrum.io/rpc" > .env
 
 type_cmd "pnpm install"
 source ~/.nvm/nvm.sh && nvm use 22 > /dev/null 2>&1
