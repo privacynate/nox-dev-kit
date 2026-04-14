@@ -8,11 +8,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATES_DIR = path.resolve(__dirname, "../templates");
 
 const TEMPLATES = [
-  { name: "hello-world", desc: "Confidential PiggyBank — Hello World for Nox" },
-  { name: "erc7984-wrapper", desc: "Wrap any ERC-20 into ERC-7984 confidential token" },
-  { name: "confidential-escrow", desc: "Encrypted bilateral escrow with auditor access" },
-  { name: "confidential-vesting", desc: "Token vesting with encrypted amounts and cliff" },
-  { name: "confidential-credit-line", desc: "Encrypted revolving credit (prime brokerage pattern)" },
+  { name: "hello-world", desc: "Confidential PiggyBank — Hello World for Nox", use: "Learn Nox basics", difficulty: "Beginner" },
+  { name: "erc7984-wrapper", desc: "Wrap any ERC-20 into a confidential token (ERC-7984)", use: "Token privacy", difficulty: "Beginner" },
+  { name: "confidential-escrow", desc: "Two parties deposit encrypted amounts, released on agreement", use: "P2P deals, M&A", difficulty: "Intermediate" },
+  { name: "confidential-vesting", desc: "Token grants with encrypted amounts, cliff, and schedule", use: "Team tokens, KOL deals", difficulty: "Intermediate" },
+  { name: "confidential-credit-line", desc: "Encrypted credit limit enforced by TEE, with auditor access", use: "Prime brokerage, DeFi lending", difficulty: "Advanced" },
 ];
 
 function printBanner() {
@@ -26,15 +26,24 @@ function printBanner() {
 }
 
 function printUsage() {
-  console.log("Usage: npx nox-dev-kit init [template] [project-name]");
-  console.log("\nAvailable templates:");
-  TEMPLATES.forEach((t) => {
-    console.log(`  ${t.name.padEnd(30)} ${t.desc}`);
+  console.log("Usage: npx nox-dev-kit init [template] [project-name]\n");
+  console.log("  What do you want to build?\n");
+  TEMPLATES.forEach((t, i) => {
+    console.log(`  ${(i + 1).toString().padStart(2)}. ${t.name}`);
+    console.log(`      ${t.desc}`);
+    console.log(`      Use case: ${t.use} | ${t.difficulty}\n`);
   });
-  console.log("\nExamples:");
-  console.log("  npx nox-dev-kit init hello-world my-first-nox-app");
-  console.log("  npx nox-dev-kit init confidential-vesting my-vesting-protocol");
-  console.log("  npx nox-dev-kit init    (interactive mode)");
+  console.log("  Examples:");
+  console.log("    npx nox-dev-kit init hello-world my-first-nox-app");
+  console.log("    npx nox-dev-kit init confidential-vesting my-vesting-protocol");
+  console.log("    npx nox-dev-kit init    (interactive mode)\n");
+  console.log("  Each template includes:");
+  console.log("    - CLAUDE.md (AI coding guide for Claude Code)");
+  console.log("    - AGENTS.md (universal AI agent guide)");
+  console.log("    - .cursorrules (Cursor IDE support)");
+  console.log("    - 4 slash commands (/nox-scaffold, /nox-lint, /nox-deploy, /nox-audit)");
+  console.log("    - Pre-configured Hardhat 3 + all Nox dependencies");
+  console.log("    - ChainGPT auditor script\n");
 }
 
 function copyDirRecursive(src: string, dest: string) {
@@ -53,22 +62,25 @@ function copyDirRecursive(src: string, dest: string) {
 }
 
 async function interactiveSelect(): Promise<string> {
-  // Simple fallback: use first template if no interactive input available
   const readline = await import("readline");
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
   return new Promise((resolve) => {
-    console.log("\nSelect a template:");
+    console.log("\n  What do you want to build?\n");
     TEMPLATES.forEach((t, i) => {
-      console.log(`  ${i + 1}. ${t.name} — ${t.desc}`);
+      const num = `${i + 1}.`.padEnd(4);
+      const badge = t.difficulty === "Beginner" ? "🟢" : t.difficulty === "Intermediate" ? "🟡" : "🔴";
+      console.log(`  ${num}${badge} ${t.name}`);
+      console.log(`      ${t.desc}`);
+      console.log(`      → ${t.use}\n`);
     });
-    rl.question("\nEnter number (1-5): ", (answer) => {
+    rl.question("  Pick a template (1-5): ", (answer) => {
       rl.close();
       const idx = parseInt(answer) - 1;
       if (idx >= 0 && idx < TEMPLATES.length) {
         resolve(TEMPLATES[idx].name);
       } else {
-        console.log("Invalid selection. Using hello-world.");
+        console.log("  Using hello-world (default).");
         resolve("hello-world");
       }
     });
